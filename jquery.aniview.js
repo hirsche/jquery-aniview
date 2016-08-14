@@ -50,7 +50,7 @@
          */
         function enteringViewport(element) {
             return (
-                    $(element).offset().top + $(element).scrollTop() <
+                    element.offset().top + element.scrollTop() <
                     ($(window).scrollTop() + $(window).height() - settings.animateThreshold)
                     );
         }
@@ -60,7 +60,7 @@
             //are animated on page load rather than needing to wait for initial 'scrolled' event
             $(collection).each(function(index, element) {
                 var elementParentContainer = $(element).parent('.av-container');
-                if ($(element).is('[data-av-animation]') && !$(elementParentContainer).hasClass('av-visible') && enteringViewport(elementParentContainer)) {
+                if ($(element).is('[data-av-animation]') && !elementParentContainer.hasClass('av-visible') && enteringViewport(elementParentContainer)) {
                     $(element).css('opacity', 1);
                     $(elementParentContainer).addClass('av-visible');
                     $(element).addClass('animated ' + $(element).attr('data-av-animation'));
