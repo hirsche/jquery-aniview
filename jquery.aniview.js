@@ -38,8 +38,9 @@
         //cycle through each matched element and wrap it in a block/div
         //and then proceed to fade out the inner contents of each matched element
         $(collection).each(function(index, element) {
-            $(element).wrap('<div class="av-container"></div>');
-            $(element).css('opacity', 0);
+            $(element)
+                .wrap('<div class="av-container" />')
+                .css('opacity', 0);
         });
 
         /**
@@ -52,32 +53,26 @@
             var elementTop = elementOffset.top + $(element).scrollTop();
             var elementBottom = elementOffset.top + $(element).scrollTop() + $(element).height();
             var viewportBottom = $(window).scrollTop() + $(window).height();
-            return (elementTop < (viewportBottom - settings.animateThreshold)) ? true : false;
+            return (elementTop < (viewportBottom - settings.animateThreshold));
         }
 
-        //cycle through each matched element to make sure any which should be animated into view,
-        //are animated on page load rather than needing to wait for initial 'scrolled' event
-        $(collection).each(function(index, element) {
-            var elementParentContainer = $(element).parent('.av-container');
-            if ($(element).is('[av-animation]') && !$(elementParentContainer).hasClass('av-visible') && EnteringViewport(elementParentContainer)) {
-                $(element).css('opacity', 1);
-                $(elementParentContainer).addClass('av-visible');
-                $(element).addClass('animated ' + $(element).attr('av-animation'));
-            }
-        });
+        function IterateCollection() {
+            //cycle through each matched element to make sure any which should be animated into view,
+            //are animated on page load rather than needing to wait for initial 'scrolled' event
+            $(collection).each(function(index, element) {
+                var elementParentContainer = $(element).parent('.av-container');
+                if ($(element).is('[data-av-animation]') && !$(elementParentContainer).hasClass('av-visible') && EnteringViewport(elementParentContainer)) {
+                    $(element).css('opacity', 1);
+                    $(elementParentContainer).addClass('av-visible');
+                    $(element).addClass('animated ' + $(element).attr('data-av-animation'));
+                }
+            });
+        }
+        IterateCollection();
 
         //enable the scrolled event timer to watch for elements coming into the viewport
         //from the bottom. default polling time is 20 ms. This can be changed using
         //'scrollPollInterval' from the user visible options
-        $(window).scrolled(settings.scrollPollInterval, function() {
-            $(collection).each(function(index, element) {
-                var elementParentContainer = $(element).parent('.av-container');
-                if ($(element).is('[av-animation]') && !$(elementParentContainer).hasClass('av-visible') && EnteringViewport(elementParentContainer)) {
-                    $(element).css('opacity', 1);
-                    $(elementParentContainer).addClass('av-visible');
-                    $(element).addClass('animated ' + $(element).attr('av-animation'));
-                }
-            });
-        });
+        $(window).scrolled(settings.scrollPollInterval, IterateCollection );
     };
 })(jQuery);
