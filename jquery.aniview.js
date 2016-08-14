@@ -60,7 +60,7 @@
             //cycle through each matched element to make sure any which should be animated into view,
             //are animated on page load rather than needing to wait for initial 'scrolled' event
             $(collection).each(function(index, element) {
-                if ($(element).is('[data-av-animation]') && !$(element).hasClass('av-visible') && enteringViewport(elementParentContainer)) {
+                if ($(element).is('[data-av-animation]') && !$(element).hasClass('av-visible') && enteringViewport($(element))) {
                     $(element).css('opacity', 1);
                     $(element).addClass('av-visible');
                     $(element).addClass('animated ' + $(element).attr('data-av-animation'));
