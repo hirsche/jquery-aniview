@@ -48,31 +48,30 @@
          *
          * @param HTMLDOMElement element the current element to check
          */
-        function EnteringViewport(element) {
-            var elementOffset = $(element).offset();
-            var elementTop = elementOffset.top + $(element).scrollTop();
-            var elementBottom = elementOffset.top + $(element).scrollTop() + $(element).height();
-            var viewportBottom = $(window).scrollTop() + $(window).height();
-            return (elementTop < (viewportBottom - settings.animateThreshold));
+        function enteringViewport(element) {
+            return (
+                    $(element).offset().top + $(element).scrollTop() <
+                    ($(window).scrollTop() + $(window).height() - settings.animateThreshold)
+                    );
         }
 
-        function IterateCollection() {
+        function iterateCollection() {
             //cycle through each matched element to make sure any which should be animated into view,
             //are animated on page load rather than needing to wait for initial 'scrolled' event
             $(collection).each(function(index, element) {
                 var elementParentContainer = $(element).parent('.av-container');
-                if ($(element).is('[data-av-animation]') && !$(elementParentContainer).hasClass('av-visible') && EnteringViewport(elementParentContainer)) {
+                if ($(element).is('[data-av-animation]') && !$(elementParentContainer).hasClass('av-visible') && enteringViewport(elementParentContainer)) {
                     $(element).css('opacity', 1);
                     $(elementParentContainer).addClass('av-visible');
                     $(element).addClass('animated ' + $(element).attr('data-av-animation'));
                 }
             });
         }
-        IterateCollection();
+        iterateCollection();
 
         //enable the scrolled event timer to watch for elements coming into the viewport
         //from the bottom. default polling time is 20 ms. This can be changed using
         //'scrollPollInterval' from the user visible options
-        $(window).scrolled(settings.scrollPollInterval, IterateCollection );
+        $(window).scrolled(settings.scrollPollInterval, iterateCollection);
     };
 })(jQuery);
