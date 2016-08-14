@@ -39,15 +39,14 @@
         //and then proceed to fade out the inner contents of each matched element
         $(collection).each(function(index, element) {
             $(element)
-                //.wrap('<div class="av-container" />')
-                .addClass('av-container')
+                .addClass("av-container")
                 .css('opacity', 0);
         });
 
         /**
          * returns boolean representing whether element's top is coming into bottom of viewport
          *
-         * @param HTMLDOMElement element the current element to check
+         * @param element HTMLDOMElement element the current element to check
          */
         function enteringViewport(element) {
             return (
@@ -61,9 +60,9 @@
             //are animated on page load rather than needing to wait for initial 'scrolled' event
             $(collection).each(function(index, element) {
                 if ($(element).is('[data-av-animation]') && !$(element).hasClass('av-visible') && enteringViewport($(element))) {
-                    $(element).css('opacity', 1);
-                    $(element).addClass('av-visible');
-                    $(element).addClass('animated ' + $(element).attr('data-av-animation'));
+                    $(element)
+                        .css('opacity', 1)
+                        .addClass('av-visible animated ' + $(element).attr('data-av-animation'));
                 }
             });
         }
