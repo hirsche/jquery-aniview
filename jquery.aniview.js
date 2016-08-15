@@ -34,6 +34,7 @@
 
         //keep the matched elements in a variable for easy reference
         var collection = this;
+        var win = $(window);
 
         //cycle through each matched element and wrap it in a block/div
         //and then proceed to fade out the inner contents of each matched element
@@ -46,24 +47,25 @@
         //enable the scrolled event timer to watch for elements coming into the viewport
         //from the bottom. default polling time is 20 ms. This can be changed using
         //'scrollPollInterval' from the user visible options
-        $(window).scrolled(settings.scrollPollInterval, function () {
+        win.scrolled(settings.scrollPollInterval, function () {
             //cycle through each matched element to make sure any which should be animated into view,
             //are animated on page load rather than needing to wait for initial 'scrolled' event
             $(collection).each(function(index, element) {
+                var el = $(element);
                 if (
-                    $(element).is('[data-av-animation]') &&
-                    !$(element).hasClass('av-visible') &&
+                    el.is('[data-av-animation]') &&
+                    !el.hasClass('av-visible') &&
                     ( // varifiy if entering viewport
-                        $(element).offset().top + $(element).scrollTop() <
-                        ($(window).scrollTop() + $(window).height() - settings.animateThreshold)
+                        el.offset().top + el.scrollTop() <
+                        (win.scrollTop() + win.height() - settings.animateThreshold)
                     )
                 ) {
-                    $(element)
+                    el
                         .css('opacity', 1)
-                        .addClass('av-visible animated ' + $(element).attr('data-av-animation'));
+                        .addClass('av-visible animated ' + el.attr('data-av-animation'));
                 }
             });
         });
-        $(window).scroll();
+        win.scroll();
     };
 })(jQuery);
