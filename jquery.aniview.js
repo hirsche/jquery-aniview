@@ -43,34 +43,27 @@
                 .css('opacity', 0);
         });
 
-        /**
-         * returns boolean representing whether element's top is coming into bottom of viewport
-         *
-         * @param element HTMLDOMElement element the current element to check
-         */
-        function enteringViewport(element) {
-            return (
-                    element.offset().top + element.scrollTop() <
-                    ($(window).scrollTop() + $(window).height() - settings.animateThreshold)
-                    );
-        }
-
-        function iterateCollection() {
+        //enable the scrolled event timer to watch for elements coming into the viewport
+        //from the bottom. default polling time is 20 ms. This can be changed using
+        //'scrollPollInterval' from the user visible options
+        $(window).scrolled(settings.scrollPollInterval, function () {
             //cycle through each matched element to make sure any which should be animated into view,
             //are animated on page load rather than needing to wait for initial 'scrolled' event
             $(collection).each(function(index, element) {
-                if ($(element).is('[data-av-animation]') && !$(element).hasClass('av-visible') && enteringViewport($(element))) {
+                if (
+                    $(element).is('[data-av-animation]') &&
+                    !$(element).hasClass('av-visible') &&
+                    ( // varifiy if entering viewport
+                        $(element).offset().top + $(element).scrollTop() <
+                        ($(window).scrollTop() + $(window).height() - settings.animateThreshold)
+                    )
+                ) {
                     $(element)
                         .css('opacity', 1)
                         .addClass('av-visible animated ' + $(element).attr('data-av-animation'));
                 }
             });
-        }
-        iterateCollection();
-
-        //enable the scrolled event timer to watch for elements coming into the viewport
-        //from the bottom. default polling time is 20 ms. This can be changed using
-        //'scrollPollInterval' from the user visible options
-        $(window).scrolled(settings.scrollPollInterval, iterateCollection);
+        });
+        $(window).scroll();
     };
 })(jQuery);
