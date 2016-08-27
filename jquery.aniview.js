@@ -1,7 +1,7 @@
 (function($) {
 
     //custom scroll replacement to allow for interval-based 'polling'
-    //rathar than checking on every pixel
+    //rather than checking on every pixel
     var uniqueCntr = 0;
     $.fn.scrolled = function(waitTime, fn) {
         if (typeof waitTime === 'function') {
@@ -11,11 +11,8 @@
         var tag = 'scrollTimer' + uniqueCntr++;
         this.scroll(function() {
             var self = $(this);
-            var timer = self.data(tag);
-            if (timer) {
-                clearTimeout(timer);
-            }
-            timer = setTimeout(function() {
+            clearTimeout(self.data(tag));
+            var timer = setTimeout(function() {
                 self.removeData(tag);
                 fn.call(self[0]);
             }, waitTime);
@@ -33,12 +30,12 @@
         }, options);
 
         //keep the matched elements in a variable for easy reference
-        var collection = this;
+        var collection = $(this);
         var win = $(window);
 
         //cycle through each matched element and wrap it in a block/div
         //and then proceed to fade out the inner contents of each matched element
-        $(collection).each(function(index, element) {
+        collection.each(function(index, element) {
             $(element)
                 .addClass("av-container")
                 .css('opacity', 0);
@@ -47,7 +44,7 @@
         function iterateSelectedElements() {
             //cycle through each matched element to make sure any which should be animated into view,
             //are animated on page load rather than needing to wait for initial 'scrolled' event
-            $(collection).each(function(index, element) {
+            collection.each(function(index, element) {
                 var el = $(element);
                 if (
                     el.is('[data-av-animation]') &&
