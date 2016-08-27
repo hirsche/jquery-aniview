@@ -44,10 +44,7 @@
                 .css('opacity', 0);
         });
 
-        //enable the scrolled event timer to watch for elements coming into the viewport
-        //from the bottom. default polling time is 20 ms. This can be changed using
-        //'scrollPollInterval' from the user visible options
-        win.scrolled(settings.scrollPollInterval, function () {
+        function iterateSelectedElements() {
             //cycle through each matched element to make sure any which should be animated into view,
             //are animated on page load rather than needing to wait for initial 'scrolled' event
             $(collection).each(function(index, element) {
@@ -65,7 +62,12 @@
                         .addClass('av-visible animated ' + el.attr('data-av-animation'));
                 }
             });
-        });
-        win.scroll();
+        }
+
+        //enable the scrolled event timer to watch for elements coming into the viewport
+        //from the bottom. default polling time is 20 ms. This can be changed using
+        //'scrollPollInterval' from the user visible options
+        win.scrolled(settings.scrollPollInterval, iterateSelectedElements);
+        iterateSelectedElements();
     };
 })(jQuery);
