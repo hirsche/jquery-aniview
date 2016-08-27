@@ -12,11 +12,10 @@
         this.scroll(function() {
             var self = $(this);
             clearTimeout(self.data(tag));
-            var timer = setTimeout(function() {
+            self.data(tag, setTimeout(function() {
                 self.removeData(tag);
                 fn.call(self[0]);
-            }, waitTime);
-            self.data(tag, timer);
+            }, waitTime));
         });
     };
 
