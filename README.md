@@ -1,6 +1,6 @@
 # jQuery AniView
 
-A jQuery plugin that works in harmony with animate.css in order to enable animations only when content comes into view. This fork shortened and optimized the original code in order to minify the resulting jquery-aniview.min.js further. Currently jquery-aniview.js can be compressed to arround 720 bytes.
+A jQuery plugin that works in harmony with animate.css in order to enable animations only when content comes into view. This fork shortened and optimized the original code in order to minify the resulting jquery.aniview.min.js further. Currently jquery.aniview.js can be compressed to arround 720 bytes.
 
 ## Demo
 
